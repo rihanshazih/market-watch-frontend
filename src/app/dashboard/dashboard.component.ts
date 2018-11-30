@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
         this.alreadyPresent = false;
         if (this.itemWatches != null && !this.selected.includes('evepraisal')) {
             this.itemWatches.forEach(watch => {
-                if (watch['typeName'] === this.selected) {
+                if (watch['typeName'].toLowerCase() === this.selected.toLowerCase()) {
                     this.selected = null;
                     this.threshold = null;
                     this.alreadyPresent = true;

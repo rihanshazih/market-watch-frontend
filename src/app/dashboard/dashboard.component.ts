@@ -100,8 +100,10 @@ export class DashboardComponent implements OnInit {
     }
 
     delete(id: string) {
+        this.itemWatches = this.itemWatches.filter(item => item.id !== id);
         this.itemWatchService.delete(id).subscribe((data) => {
-            this.loadItemWatches();
+        }, (err) => {
+            console.log(err);
         });
     }
 

@@ -1,2 +1,4 @@
-<button class="btn btn-danger" (click)="showConfirmation = true" [disabled]="showConfirmation">Delete account</button>
-<button class="btn btn-danger" *ngIf="showConfirmation" (click)="submit()" [disabled]="submitting">Are you sure?</button>
+<div class="mb-3 mt-3">
+    <button class="btn btn-danger" (click)="showConfirmation = true" [disabled]="showConfirmation">Delete account</button>
+    <button class="btn btn-danger" *ngIf="showConfirmation" (click)="submit()" [disabled]="submitting">Are you sure?</button>
+</div>

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-6" [class.text-danger]="selectedStructure === 'none'">
+    Selected structure: {{selectedStructure}}
+  </div>
+  <div class="col-md-6">
+
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [class.is-invalid]="suggestionSearchFailed" [(ngModel)]="selected"
+             [ngbTypeahead]="search" placeholder="System and structure name" />
+      <button *ngIf="!searching && !submitting" class="btn btn-primary input-group-append" (click)="submit()" [disabled]="">Select structure</button>
+      <div class="alert alert-info" *ngIf="searching" >Searching ...</div>
+      <div class="alert alert-info" *ngIf="submitting" >Processing ...</div>
+      <div class="invalid-feedback" *ngIf="suggestionSearchFailed">Sorry, suggestions could not be loaded. You must have access to that structure.</div>
+      <div class="alert alert-danger" *ngIf="notFound">The structure could not be found. Is there a typo?</div>
+    </div>
+  </div>
+</div>
+

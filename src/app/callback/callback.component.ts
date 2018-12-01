@@ -23,7 +23,7 @@ export class CallbackComponent implements OnInit {
                     this.router.navigate([navigationTarget]);
                 }, (err) => {
                     console.log(err);
-                    alert('Authentication failed. Please try again later.');
+                    alert('Authentication failed. ' + err + ' Please try again.');
                 });
         });
     }

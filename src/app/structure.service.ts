@@ -10,7 +10,7 @@ export class StructureService {
     }
 
     getAvailable(typeahead: string): Observable<Object[]> {
-        if (typeahead.length <= 8) {
+        if (typeahead.length < 4) {
             return Observable.of([]);
         }
         const token = localStorage.getItem(environment.tokenVersion);

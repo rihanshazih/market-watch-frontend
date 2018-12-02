@@ -74,7 +74,6 @@ export class DashboardComponent implements OnInit {
             });
         }
 
-        console.log(!this.alreadyPresent, this.selected, this.threshold);
         if (!this.alreadyPresent && this.selected) {
             const itemWatch = {
                 typeName: this.selected,
@@ -89,7 +88,7 @@ export class DashboardComponent implements OnInit {
                 this.selected = null;
                 this.threshold = null;
                 this.submitting = false;
-                this.loadItemWatches();
+                this.itemWatches.unshift(data);
             }, (err) => {
                 if (err.status === 404) {
                     this.notFound = true;

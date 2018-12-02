@@ -1,21 +1,24 @@
 <div class="row mt-3">
-  <div class="col-md-10"><h2>Dashboard</h2></div>
+  <div class="col-md-10"><h2>Eve Market Watch - Dashboard</h2></div>
   <div class="col-md-2"><button class="btn btn-link" style="float: right" (click)="logout()">Logout</button></div>
 </div>
 
 <app-structure-selector (onSelect)="structureSelected($event)"></app-structure-selector>
 
-<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a structure that you have access to first. Currently it has to be a citadel. The search is not strict, you can use 'ge sota factory' to search for GE-8JV - SOTA FACTORY.</div>
+<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a player owned structure that you have access to first. The search is not strict, so you could use 'ge sota factory' to search for GE-8JV - SOTA FACTORY (if you have access).</div>
 <div *ngIf="structureId">
 <p *ngIf="!itemWatches">Loading ...</p>
 <p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
-<p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications for the following thresholds:</p>
+<p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications if one of the following items' stock drops below the threshold:</p>
 <table class="table" *ngIf="itemWatches">
   <tbody>
   <tr>
     <td>
-      <input type="text" class="form-control" [class.is-invalid]="suggestionSearchFailed" [(ngModel)]="selected"
-             [ngbTypeahead]="search" placeholder="Item name or evepraisal link"/>
+      <div class="input-group">
+        <input type="text" class="form-control" [class.is-invalid]="suggestionSearchFailed" [(ngModel)]="selected"
+          [ngbTypeahead]="search" placeholder="Item name or evepraisal link"/>
+        <button *ngIf="searching" class="btn btn-secondary input-group-append" [disabled]="true"><i class="fa fa-spinner fa-spin"></i></button>
+      </div>
     </td>
     <td>
       <input *ngIf="!selected || !selected.includes('evepraisal')" type="number" class="form-control"
@@ -23,10 +26,9 @@
       <div *ngIf="selected && selected.includes('evepraisal')">Thresholds are taken from the evepraisal quantities and will <b>override</b> existing entries.</div>
     </td>
     <td>
-      <button class="btn btn-primary" *ngIf="!submitting && !searching" (click)="submitItemWatch()">+</button>
+      <button class="btn btn-primary" *ngIf="!submitting" (click)="submitItemWatch()" [disabled]="searching">+</button>
+      <button *ngIf="submitting" class="btn btn-secondary" [disabled]="true"><i class="fa fa-cog fa-spin"></i></button>
       <div class="invalid-feedback" *ngIf="suggestionSearchFailed">Sorry, suggestions could not be loaded.</div>
-      <div class="alert alert-info" *ngIf="submitting" >Processing ...</div>
-      <div class="alert alert-info" *ngIf="searching" >Searching ...</div>
       <div class="alert alert-danger" *ngIf="notFound">The item could not be found. Is there a typo?</div>
       <div class="alert alert-warning" *ngIf="alreadyPresent">The item is already present.<br/>Please delete the existing entry first.</div>
     </td>

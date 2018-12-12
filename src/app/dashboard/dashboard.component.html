@@ -5,7 +5,7 @@
 
 <app-structure-selector (onSelect)="structureSelected($event)"></app-structure-selector>
 
-<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a player owned structure that you have access to first. The search is not strict, so you could use 'ge sota factory' to search for GE-8JV - SOTA FACTORY (if you have access).</div>
+<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a structure or station that you have access to first. The search is not strict, so you could use 'Jita Navy' to search for Jita IV - Moon 4 - Caldari Navy Assembly Plant.</div>
 <div *ngIf="structureId">
 <p *ngIf="!itemWatches">Loading ...</p>
 <p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
@@ -36,7 +36,7 @@
   <tr *ngFor="let watch of itemWatches">
     <td class="align-middle"><img src="https://image.eveonline.com/Type/{{watch['typeId']}}_64.png" style="margin-right: 10px;"/>
       {{watch['typeName']}}</td>
-    <td>{{watch['threshold'] | number:'1.0-2'}}</td>
+    <td class="align-middle">{{watch['threshold'] | number:'1.0-2'}}</td>
     <td class="align-middle"><button (click)="delete(watch['id'])" type="button" class="btn btn-danger">x</button></td>
   </tr>
   </tbody>

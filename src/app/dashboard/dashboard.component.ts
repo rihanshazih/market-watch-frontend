@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
 
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
     structureId: number;
+    selectedComparator = 'lt';
 
     constructor(private itemWatchService: ItemWatchService, private router: Router) {
         // remove old token version
@@ -69,6 +70,7 @@ export class DashboardComponent implements OnInit {
                 if (watch['typeName'].toLowerCase() === this.selected.toLowerCase()) {
                     this.selected = null;
                     this.threshold = null;
+                    this.selectedComparator = 'lt';
                     this.alreadyPresent = true;
                 }
             });
@@ -78,7 +80,8 @@ export class DashboardComponent implements OnInit {
             const itemWatch = {
                 typeName: this.selected,
                 locationId: this.structureId,
-                threshold: this.threshold
+                threshold: this.threshold,
+                comparator: this.selectedComparator
             };
 
             this.submitting = true;
@@ -88,6 +91,7 @@ export class DashboardComponent implements OnInit {
                 this.selected = null;
                 this.threshold = null;
                 this.submitting = false;
+                this.selectedComparator = 'lt';
                 this.itemWatches.unshift(data);
             }, (err) => {
                 if (err.status === 404) {
@@ -116,5 +120,9 @@ export class DashboardComponent implements OnInit {
         localStorage.removeItem('market-watch-structure');
         localStorage.removeItem('market-watch-structure-id');
         this.router.navigate(['/']);
+    }
+
+    selectComparator(comparator: string) {
+        this.selectedComparator = comparator;
     }
 }

@@ -16,7 +16,7 @@
     <p *ngIf="!itemWatches">Loading ...</p>
     <p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
     <p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications if one of the following items' stock
-        drops below the threshold:</p>
+        exceeds the threshold:</p>
 
     <table class="table" *ngIf="itemWatches">
         <tbody>

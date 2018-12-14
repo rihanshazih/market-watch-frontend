@@ -16,7 +16,7 @@
     <p *ngIf="!itemWatches">Loading ...</p>
     <p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
     <p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications if one of the following items' stock
-        exceeds the threshold:</p>
+        reaches the threshold:</p>
 
     <table class="table" *ngIf="itemWatches">
         <tbody>
@@ -34,7 +34,9 @@
                 <div class="input-group" style="width: 50px">
                     <select class="custom-select" [(ngModel)]="selectedComparator">
                         <option [value]="'lt'" selected>&lt;</option>
+                        <option [value]="'le'">&le;</option>
                         <option [value]="'gt'">&gt;</option>
+                        <option [value]="'ge'">&ge;</option>
                     </select>
                 </div>
             </td>
@@ -66,6 +68,8 @@
             </td>
             <td class="col-1">
                 <span *ngIf="!watch['comparator'] || watch['comparator'] === 'lt'">&lt;</span>
+                <span *ngIf="watch['comparator'] === 'le'">&le;</span>
+                <span *ngIf="watch['comparator'] === 'ge'">&ge;</span>
                 <span *ngIf="watch['comparator'] === 'gt'">&gt;</span>
             </td>
             <td class="col-5">

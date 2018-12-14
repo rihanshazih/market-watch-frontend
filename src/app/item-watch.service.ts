@@ -32,4 +32,9 @@ export class ItemWatchService {
         const token = localStorage.getItem(environment.tokenVersion);
         return this.http.delete(environment.apiUrl + '/itemwatch/' + id + '?token=' + token);
     }
+
+    deleteAll() {
+        const token = localStorage.getItem(environment.tokenVersion);
+        return this.http.delete(environment.apiUrl + '/itemwatch/?token=' + token);
+    }
 }

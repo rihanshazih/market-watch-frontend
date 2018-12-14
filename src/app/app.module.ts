@@ -14,6 +14,7 @@ import { StructureSelectorComponent } from './dashboard/structure-selector/struc
 import {StructureService} from './structure.service';
 import { DangerZoneComponent } from './dashboard/danger-zone/danger-zone.component';
 import {UserService} from './user.service';
+import {MarketService} from './market.service';
 
 const appRoutes: Routes = [
     {
@@ -49,7 +50,7 @@ const appRoutes: Routes = [
         HttpClientModule,
         FormsModule
     ],
-    providers: [ItemWatchService, StructureService, UserService],
+    providers: [ItemWatchService, StructureService, UserService, MarketService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

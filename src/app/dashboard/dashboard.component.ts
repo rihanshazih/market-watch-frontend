@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {catchError, debounceTime, distinctUntilChanged, switchMap, tap, merge} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, merge, switchMap, tap} from 'rxjs/operators';
 import {ItemWatchService} from '../item-watch.service';
 import 'rxjs/add/observable/of';
 import {Router} from '@angular/router';
@@ -38,13 +38,12 @@ export class DashboardComponent implements OnInit {
         this.loadItemWatches();
     }
 
-    private loadItemWatches() {
+    loadItemWatches() {
         this.itemWatches = null;
         this.itemWatchService.get(this.structureId).subscribe((data) => {
             this.itemWatches = data;
         });
     }
-
     search = (text$: Observable<string>) =>
         text$.pipe(
             debounceTime(300),
@@ -91,7 +90,6 @@ export class DashboardComponent implements OnInit {
                 this.selected = null;
                 this.threshold = null;
                 this.submitting = false;
-                this.selectedComparator = 'lt';
                 this.itemWatches.unshift(data);
             }, (err) => {
                 if (err.status === 404) {
@@ -120,9 +118,5 @@ export class DashboardComponent implements OnInit {
         localStorage.removeItem('market-watch-structure');
         localStorage.removeItem('market-watch-structure-id');
         this.router.navigate(['/']);
-    }
-
-    selectComparator(comparator: string) {
-        this.selectedComparator = comparator;
     }
 }

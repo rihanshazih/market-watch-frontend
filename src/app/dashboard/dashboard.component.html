@@ -1,66 +1,82 @@
 <div class="row mt-3">
-  <div class="col-md-10"><h2>Eve Market Watch - Dashboard</h2></div>
-  <div class="col-md-2"><button class="btn btn-link" style="float: right" (click)="logout()">Logout</button></div>
+    <div class="col-md-10"><h2>Eve Market Watch - Dashboard</h2></div>
+    <div class="col-md-2">
+        <button class="btn btn-link" style="float: right" (click)="logout()">Logout</button>
+    </div>
 </div>
 
 <app-structure-selector (onSelect)="structureSelected($event)"></app-structure-selector>
 
-<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a structure or station that you have access to first. The search is not strict, so you could use 'Jita Navy' to search for Jita IV - Moon 4 - Caldari Navy Assembly Plant.</div>
+<div *ngIf="!structureId" class="alert alert-warning mb-3">Please select a structure or station that you have access to
+    first. The search is not strict, so you could use 'Jita Navy' to search for Jita IV - Moon 4 - Caldari Navy Assembly
+    Plant.
+</div>
 <div *ngIf="structureId">
-<p *ngIf="!itemWatches">Loading ...</p>
-<p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
-<p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications if one of the following items' stock drops below the threshold:</p>
+    <h3>Thresholds</h3>
+    <p *ngIf="!itemWatches">Loading ...</p>
+    <p *ngIf="itemWatches && itemWatches.length === 0">You haven't defined any thresholds for this structure yet.</p>
+    <p *ngIf="itemWatches && itemWatches.length > 0">You will receive notifications if one of the following items' stock
+        drops below the threshold:</p>
 
-<table class="table" *ngIf="itemWatches">
-  <tbody>
-  <tr class="row">
-    <td class="col-5">
-      <div class="input-group">
-        <input type="text" class="form-control" [class.is-invalid]="suggestionSearchFailed" [(ngModel)]="selected"
-               [ngbTypeahead]="search" placeholder="Item name or evepraisal link"/>
-        <button *ngIf="searching" class="btn btn-secondary input-group-append" [disabled]="true"><i class="fa fa-spinner fa-spin"></i></button>
-      </div>
-    </td>
-    <td *ngIf="!selected || !selected.includes('evepraisal')" class="col-1">
-      <div class="input-group" style="width: 50px">
-        <select class="custom-select" id="inputGroupSelect01">
-          <option value="lt" selected (click)="selectComparator('lt')">&lt;</option>
-          <option value="gt" (click)="selectComparator('gt')">&gt;</option>
-        </select>
-      </div>
-    </td>
-    <td class="col-5">
-      <input *ngIf="!selected || !selected.includes('evepraisal')" type="number" class="form-control"
-             [(ngModel)]="threshold" placeholder="Threshold"/>
-      <div *ngIf="selected && selected.includes('evepraisal')">Thresholds are taken from the evepraisal quantities and will <b>override</b> existing entries.</div>
-    </td>
-    <td class="col-1">
-      <button class="btn btn-primary" *ngIf="!submitting" (click)="submitItemWatch()" [disabled]="searching">+</button>
-      <button *ngIf="submitting" class="btn btn-secondary" [disabled]="true"><i class="fa fa-cog fa-spin"></i></button>
-      <div class="invalid-feedback" *ngIf="suggestionSearchFailed">Sorry, suggestions could not be loaded.</div>
-      <div class="alert alert-danger" *ngIf="notFound">The item could not be found. Is there a typo?</div>
-      <div class="alert alert-warning" *ngIf="alreadyPresent">The item is already present.<br/>Please delete the existing entry first.</div>
-    </td>
-  </tr>
-  <tr *ngFor="let watch of itemWatches" class="row">
-    <td class="col-5">
-      <img src="https://image.eveonline.com/Type/{{watch['typeId']}}_32.png" style="margin-right: 10px;"/>
-      {{watch['typeName']}}
-    </td>
-    <td class="col-1">
-      <span *ngIf="!watch['comparator'] || watch['comparator'] === 'lt'">&lt;</span>
-      <span *ngIf="watch['comparator'] === 'gt'">&gt;</span>
-    </td>
-    <td class="col-5">
-        {{watch['threshold'] | number:'1.0-2'}}
-    </td>
-    <td class="col-1">
-      <button (click)="delete(watch['id'])" type="button" class="btn btn-danger">x</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <table class="table" *ngIf="itemWatches">
+        <tbody>
+        <tr class="row">
+            <td class="col-5">
+                <div class="input-group">
+                    <input type="text" class="form-control" [class.is-invalid]="suggestionSearchFailed"
+                           [(ngModel)]="selected"
+                           [ngbTypeahead]="search" placeholder="Item name or evepraisal link"/>
+                    <button *ngIf="searching" class="btn btn-secondary input-group-append" [disabled]="true"><i
+                            class="fa fa-spinner fa-spin"></i></button>
+                </div>
+            </td>
+            <td *ngIf="!selected || !selected.includes('evepraisal')" class="col-1">
+                <div class="input-group" style="width: 50px">
+                    <select class="custom-select" [(ngModel)]="selectedComparator">
+                        <option [value]="'lt'" selected>&lt;</option>
+                        <option [value]="'gt'">&gt;</option>
+                    </select>
+                </div>
+            </td>
+            <td class="col-5">
+                <input *ngIf="!selected || !selected.includes('evepraisal')" type="number" class="form-control"
+                       [(ngModel)]="threshold" placeholder="Threshold"/>
+                <div *ngIf="selected && selected.includes('evepraisal')">Thresholds are taken from the evepraisal
+                    quantities and will <b>override</b> existing entries.
+                </div>
+            </td>
+            <td class="col-1">
+                <button class="btn btn-primary" *ngIf="!submitting" (click)="submitItemWatch()" [disabled]="searching">
+                    +
+                </button>
+                <button *ngIf="submitting" class="btn btn-secondary" [disabled]="true"><i class="fa fa-cog fa-spin"></i>
+                </button>
+                <div class="invalid-feedback" *ngIf="suggestionSearchFailed">Sorry, suggestions could not be loaded.
+                </div>
+                <div class="alert alert-danger" *ngIf="notFound">The item could not be found. Is there a typo?</div>
+                <div class="alert alert-warning" *ngIf="alreadyPresent">The item is already present.<br/>Please delete
+                    the existing entry first.
+                </div>
+            </td>
+        </tr>
+        <tr *ngFor="let watch of itemWatches" class="row">
+            <td class="col-5">
+                <img src="https://image.eveonline.com/Type/{{watch['typeId']}}_32.png" style="margin-right: 10px;"/>
+                {{watch['typeName']}}
+            </td>
+            <td class="col-1">
+                <span *ngIf="!watch['comparator'] || watch['comparator'] === 'lt'">&lt;</span>
+                <span *ngIf="watch['comparator'] === 'gt'">&gt;</span>
+            </td>
+            <td class="col-5">
+                {{watch['threshold'] | number:'1.0-2'}}
+            </td>
+            <td class="col-1">
+                <button (click)="delete(watch['id'])" type="button" class="btn btn-danger">x</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
-<hr/>
-<app-danger-zone></app-danger-zone>
+<app-danger-zone (onDeleteItemWatches)="loadItemWatches()"></app-danger-zone>

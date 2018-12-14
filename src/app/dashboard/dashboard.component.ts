@@ -90,7 +90,11 @@ export class DashboardComponent implements OnInit {
                 this.selected = null;
                 this.threshold = null;
                 this.submitting = false;
-                this.itemWatches.unshift(data);
+                if (itemWatch.typeName.includes('evepraisal')) {
+                    this.loadItemWatches();
+                } else {
+                    this.itemWatches.unshift(data);
+                }
             }, (err) => {
                 if (err.status === 404) {
                     this.notFound = true;

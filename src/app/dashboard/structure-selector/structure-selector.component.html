@@ -1,7 +1,7 @@
 <div class="row mb-3">
-  <div class="col-md-6" [class.text-danger]="selectedStructure === 'none'">
-    Selected structure: {{selectedStructure}}<br/>
-    <span *ngIf="selectedStructure !== 'none'">Markets are checked once per hour.</span>
+  <div class="col-md-6" [class.text-danger]="structureName === 'none'">
+    Selected structure: {{structureName}}<br/>
+    <span *ngIf="structureName !== 'none'">Markets are checked once per hour.</span>
   </div>
   <div class="col-md-6">
 
@@ -13,6 +13,24 @@
       <button *ngIf="submitting" class="btn btn-secondary input-group-append" [disabled]="true"><i class="fa fa-cog fa-spin"></i></button>
       <div class="invalid-feedback" *ngIf="suggestionSearchFailed">Sorry, suggestions could not be loaded. You must have access to that structure.</div>
       <div class="alert alert-danger" *ngIf="notFound">The structure could not be found. Is there a typo?</div>
+    </div>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-12">
+    <button *ngIf="!markets" class="btn btn-outline-secondary" (click)="displayMarkets(true)" [disabled]="loadingMarkets">
+      <span *ngIf="!loadingMarkets">Show my markets</span>
+      <i class="fa fa-cog fa-spin" *ngIf="loadingMarkets"></i>
+    </button>
+    <div *ngIf="markets">
+      <h3>Market List</h3>
+      <button class="btn btn-outline-secondary pull-right" *ngIf="markets" (click)="displayMarkets(false)">Hide my markets</button>
+      <p>You have set up thresholds for the following markets. Click on any to switch.</p>
+      <ul>
+        <li *ngFor="let market of markets" >
+          <button class="btn btn-link" (click)="onMarketSelect(market)">{{market.structureName}}</button>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

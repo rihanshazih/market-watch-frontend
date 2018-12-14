@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, merge, switchMap, tap} from 'rxjs/operators';
 import {StructureService} from '../../structure.service';
+import {MarketService} from '../../market.service';
 
 @Component({
     selector: 'app-structure-selector',
@@ -9,22 +10,35 @@ import {StructureService} from '../../structure.service';
     styleUrls: ['./structure-selector.component.css']
 })
 export class StructureSelectorComponent implements OnInit {
-    selectedStructure: string;
+    structureName: string;
     notFound: boolean;
     suggestionSearchFailed: boolean;
     selected: any;
     searching: boolean;
     submitting: boolean;
+    markets: any[];
+    loadingMarkets: boolean;
 
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
 
     @Output() onSelect: EventEmitter<number> = new EventEmitter();
 
-    constructor(private service: StructureService) {
-        this.selectedStructure = localStorage.getItem('market-watch-structure') || 'none';
+    constructor(private service: StructureService, private marketService: MarketService) {
+        this.structureName = localStorage.getItem('market-watch-structure') || 'none';
     }
 
     ngOnInit() {
+    }
+
+    private loadMarkets() {
+        this.loadingMarkets = true;
+        this.marketService.getMyActiveMarkets().subscribe((data) => {
+            this.markets = data;
+            this.loadingMarkets = false;
+        }, (err) => {
+            console.log(err);
+            this.loadingMarkets = false;
+        });
     }
 
     search = (text$: Observable<string>) =>
@@ -47,7 +61,7 @@ export class StructureSelectorComponent implements OnInit {
     submit() {
         this.submitting = true;
         this.service.getStructureId(this.selected).subscribe((data) => {
-            this.selectedStructure = this.selected;
+            this.structureName = this.selected;
             localStorage.setItem('market-watch-structure', this.selected);
             localStorage.setItem('market-watch-structure-id', data + '');
             this.onSelect.emit(data);
@@ -59,5 +73,20 @@ export class StructureSelectorComponent implements OnInit {
             }
             this.submitting = false;
         });
+    }
+
+    onMarketSelect(market: any) {
+        this.onSelect.emit(market.structureId);
+        this.structureName = market.structureName;
+        localStorage.setItem('market-watch-structure', market.structureName);
+        localStorage.setItem('market-watch-structure-id', market.structureId);
+    }
+
+    displayMarkets(displayMarkets: boolean) {
+        if (displayMarkets) {
+            this.loadMarkets();
+        } else {
+            this.markets = null;
+        }
     }
 }

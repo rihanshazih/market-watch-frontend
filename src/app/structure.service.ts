@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {environment} from '../environments/environment';
+import {Util} from './util';
 
 @Injectable()
 export class StructureService {
@@ -13,12 +14,10 @@ export class StructureService {
         if (typeahead.length < 4) {
             return Observable.of([]);
         }
-        const token = localStorage.getItem(environment.tokenVersion);
-        return this.http.get<any[]>(environment.apiUrl + '/search-structure/?term=' + typeahead
-            + '&token=' + token);
+        return this.http.get<any[]>(environment.apiUrl + '/search-structure/?term=' + typeahead, Util.getAuth());
     }
 
     getStructureId(structureName: string): Observable<number> {
-        return this.http.get<number>(environment.apiUrl + '/structure/id/?term=' + structureName);
+        return this.http.get<number>(environment.apiUrl + '/structure/id/?term=' + structureName, Util.getAuth());
     }
 }

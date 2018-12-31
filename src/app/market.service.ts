@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {environment} from '../environments/environment';
+import {Util} from './util';
 
 @Injectable()
 export class MarketService {
@@ -10,7 +11,6 @@ export class MarketService {
     }
 
     getMyActiveMarkets(): Observable<Object[]> {
-        const token = localStorage.getItem(environment.tokenVersion);
-        return this.http.get<any[]>(environment.apiUrl + '/markets/?token=' + token);
+        return this.http.get<any[]>(environment.apiUrl + '/markets/', Util.getAuth());
     }
 }

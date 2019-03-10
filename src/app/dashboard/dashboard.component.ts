@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
     hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
     structureId: number;
     selectedComparator = 'lt';
+    selectedBuy = false;
 
     constructor(private itemWatchService: ItemWatchService, private router: Router) {
         // remove old token version
@@ -66,7 +67,8 @@ export class DashboardComponent implements OnInit {
         this.alreadyPresent = false;
         if (this.itemWatches != null && !this.selected.includes('evepraisal')) {
             this.itemWatches.forEach(watch => {
-                if (watch['typeName'].toLowerCase() === this.selected.toLowerCase()) {
+                if (watch['typeName'].toLowerCase() === this.selected.toLowerCase()
+                        && watch['isBuy'] === this.selectedBuy) {
                     this.selected = null;
                     this.threshold = null;
                     this.selectedComparator = 'lt';
@@ -80,7 +82,8 @@ export class DashboardComponent implements OnInit {
                 typeName: this.selected,
                 locationId: this.structureId,
                 threshold: this.threshold,
-                comparator: this.selectedComparator
+                comparator: this.selectedComparator,
+                buy: this.selectedBuy
             };
 
             this.submitting = true;

@@ -30,8 +30,16 @@
                             class="fa fa-spinner fa-spin"></i></button>
                 </div>
             </td>
+            <td class="col-1">
+                <div class="input-group" style="width: 75px">
+                    <select class="custom-select" [(ngModel)]="selectedBuy">
+                        <option [value]="false" selected>sell</option>
+                        <option [value]="true">buy</option>
+                    </select>
+                </div>
+            </td>
             <td *ngIf="!selected || !selected.includes('evepraisal')" class="col-1">
-                <div class="input-group" style="width: 50px">
+                <div class="input-group" style="width: 75px">
                     <select class="custom-select" [(ngModel)]="selectedComparator">
                         <option [value]="'lt'" selected>&lt;</option>
                         <option [value]="'le'">&le;</option>
@@ -40,7 +48,7 @@
                     </select>
                 </div>
             </td>
-            <td class="col-5">
+            <td class="col-4">
                 <input *ngIf="!selected || !selected.includes('evepraisal')" type="number" class="form-control"
                        [(ngModel)]="threshold" placeholder="Threshold"/>
                 <div *ngIf="selected && selected.includes('evepraisal')">Thresholds are taken from the evepraisal
@@ -67,12 +75,16 @@
                 {{watch['typeName']}}
             </td>
             <td class="col-1">
+                <span *ngIf="!watch['buy']">sell</span>
+                <span *ngIf="watch['buy']">buy</span>
+            </td>
+            <td class="col-1">
                 <span *ngIf="!watch['comparator'] || watch['comparator'] === 'lt'">&lt;</span>
                 <span *ngIf="watch['comparator'] === 'le'">&le;</span>
                 <span *ngIf="watch['comparator'] === 'ge'">&ge;</span>
                 <span *ngIf="watch['comparator'] === 'gt'">&gt;</span>
             </td>
-            <td class="col-5">
+            <td class="col-4">
                 {{watch['threshold'] | number:'1.0-2'}}
             </td>
             <td class="col-1">

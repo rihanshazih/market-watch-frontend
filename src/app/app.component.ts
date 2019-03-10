@@ -11,12 +11,6 @@ import {environment} from '../environments/environment';
 export class AppComponent {
 
     constructor(private router: Router) {
-        // clear old token version
-        if (localStorage.getItem('market-watch-token')) {
-            localStorage.removeItem('market-watch-token');
-            router.navigate(['/']);
-        }
-
         if (localStorage.getItem(environment.tokenVersion)) {
             const token = localStorage.getItem(environment.tokenVersion);
             if (new JwtHelperService().isTokenExpired(token)) {

@@ -27,11 +27,6 @@ export class DashboardComponent implements OnInit {
     selectedBuy = false;
 
     constructor(private itemWatchService: ItemWatchService, private router: Router) {
-        // remove old token version
-        if (localStorage.getItem('market-watch-token')) {
-            localStorage.removeItem('market-watch-token');
-            router.navigate(['/']);
-        }
     }
 
     ngOnInit() {

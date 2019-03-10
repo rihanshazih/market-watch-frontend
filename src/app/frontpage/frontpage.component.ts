@@ -12,11 +12,6 @@ export class FrontpageComponent implements OnInit {
     authUrl = environment.ssoUrl;
 
     constructor(private router: Router) {
-        // remove old token version
-        if (localStorage.getItem('market-watch-token')) {
-            localStorage.removeItem('market-watch-token');
-            router.navigate(['/']);
-        }
     }
 
     ngOnInit() {
